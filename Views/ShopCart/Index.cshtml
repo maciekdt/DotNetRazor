@@ -1,0 +1,61 @@
+﻿@model IEnumerable<WebApplicationList10.ViewModels.ArticleCardViewModel>
+
+@{
+    ViewData["Title"] = "My Shopping Cart";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+<h1>My Shopping Cart</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Article.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article.Category)
+            </th>
+            <th>Image</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Article.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Article.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Article.Category.Name)
+                </td>
+                <td>
+                    @if (item.Article.ImageUri == null)
+                    {
+                        <img src="~/image/default.jpg" class="img-preview" />
+                    }
+                    @if (item.Article.ImageUri != null)
+                    {
+                        <img src="~/upload/@item.Article.ImageUri" class="img-preview" />
+                    }
+                </td>
+                <td>
+                    @item.Amount.ToString()
+                </td>
+                <td>
+                    <a asp-action="AddOne" asp-route-id="@item.Article.Id">+1</a> |
+                    <a asp-action="RemoveOne" asp-route-id="@item.Article.Id">-1</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Article.Id">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<h2>@("Total price " + ViewBag.Sum)</h2>
